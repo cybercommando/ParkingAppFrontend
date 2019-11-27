@@ -25,7 +25,7 @@
   </div>
   <div class="row">
     <h2>Maps</h2>
-    <gmap-map v-bind:center = "center" v-bind:zoom= "15" style="height: 400px ">
+    <gmap-map v-bind:center = "center" v-bind:zoom= "16" style="height: 400px ">
       <gmap-marker
       v-bind:key= "index"
       v-for = "(m,index) in markers"
@@ -88,6 +88,16 @@ export default {
       try{
         const {data} = await axios.post('http://localhost:4000/api/search/', {destination: this.Location, starttime: this.StartTime, endtime: this.EndTime}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
         this.parkings = data
+
+        data.forEach(item => {
+          console.log("latitude",item['latitude'])
+          console.log("longitude",item['longitude'])
+          var temp = {
+            position: {lat:item['latitude'], lng: item['longitude']}
+          }
+          this.markers.push(temp)            
+        });
+
       } catch(e) {
         console.log(e)
       }
