@@ -34,7 +34,7 @@
       </gmap-marker>
     </gmap-map>
   </div>
-  <div class="row">
+  <!--<div class="row">
     <table class="table">
         <thead>
             <tr>
@@ -59,7 +59,7 @@
             </tr>
         </tbody>
     </table>
-  </div>
+  </div>-->
 
 </div>
 </template>
@@ -90,8 +90,6 @@ export default {
         this.parkings = data
 
         data.forEach(item => {
-          console.log("latitude",item['latitude'])
-          console.log("longitude",item['longitude'])
           var temp = {
             position: {lat:item['latitude'], lng: item['longitude']}
           }
