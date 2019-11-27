@@ -7,11 +7,21 @@ import router from './router'
 import store from './store'
 import Axios from 'axios'
 
+import * as VueGoogleMaps from 'vue2-google-maps'
+ 
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: 'AIzaSyDV_4kS5KvnmtEyWygXpGIe5GBDRv1k9Oc'
+  }
+})
+
+
 Vue.prototype.$http = Axios;
 const token = localStorage.getItem('token')
 if (token) {
   Vue.prototype.$http.defaults.headers.common['Authorization'] = token
 }
+
 
 Vue.config.productionTip = false
 
