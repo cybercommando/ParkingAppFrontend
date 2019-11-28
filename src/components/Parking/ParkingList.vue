@@ -1,5 +1,5 @@
 <template>
-<div class="login-wrapper border border-light">
+<div class="border border-light">
     <h3 style="text-align: center">Parkings List</h3>
     <table class="table">
         <thead>
