@@ -1,38 +1,49 @@
 <template>
-<div>
-  <div class="row">
-    <h3 style="text-align: center">Search Parkings</h3>
-    <hr>
-    <form class="form-signin" @submit.prevent="parkingSearch">
-      <div class="col-md-12">
-        <div class="col-sm-3">
-          <label for="inputLocation" class="sr-only">Location</label>
-          <input v-model="Location" type="text" id="inputLocation" class="form-control" placeholder="Location" required autofocus>
-        </div>
-        <div class="col-sm-3">
-          <label for="inputStartTime" class="sr-only">Start Time</label>
-          <input v-model="StartTime" type="text" id="inputStartTime" class="form-control" placeholder="StartTime" required>
-        </div>
-        <div class="col-sm-3">
-          <label for="inputEndTime" class="sr-only">EndTime</label>
-          <input v-model="EndTime" type="text" id="inputEndTime" class="form-control" placeholder="EndTime" required>
-        </div>
-        <div class="col-sm-3">
-          <button class="btn btn-sm btn-primary btn-block" type="submit">Search</button>
-        </div>
-      </div>
-    </form>
+<div class="row">
+  <div class="col-md-8">
+    <div class="row">
+      <fieldset>
+        <legend>Search Parkings</legend>
+        <form class="form-signin" @submit.prevent="parkingSearch">
+          <div class="col-md-12">
+            <div class="col-sm-3">
+              <label for="inputLocation" class="sr-only">Location</label>
+              <input v-model="Location" type="text" id="inputLocation" class="form-control" placeholder="Location" required autofocus>
+            </div>
+            <div class="col-sm-3">
+              <label for="inputStartTime" class="sr-only">Start Time</label>
+              <input v-model="StartTime" type="text" id="inputStartTime" class="form-control" placeholder="StartTime" required>
+            </div>
+            <div class="col-sm-3">
+              <label for="inputEndTime" class="sr-only">EndTime</label>
+              <input v-model="EndTime" type="text" id="inputEndTime" class="form-control" placeholder="EndTime" required>
+            </div>
+            <div class="col-sm-3">
+              <button class="btn btn-sm btn-primary btn-block" type="submit">Search</button>
+            </div>
+            
+          </div>
+        </form>
+      </fieldset>
+    </div>
+    <div class="row">
+      <fieldset>
+        <legend>Map</legend>
+        <gmap-map v-bind:center = "center" v-bind:zoom= "12" style="height: 400px ">
+          <gmap-marker
+          v-bind:key= "index"
+          v-for = "(m,index) in markers"
+          v-bind:position = "m.position"
+          v-bind:clickable = "true">
+          </gmap-marker>
+        </gmap-map>
+      </fieldset>
+    </div>
   </div>
-  <div class="row">
-    <h2>Maps</h2>
-    <gmap-map v-bind:center = "center" v-bind:zoom= "16" style="height: 400px ">
-      <gmap-marker
-      v-bind:key= "index"
-      v-for = "(m,index) in markers"
-      v-bind:position = "m.position"
-      v-bind:clickable = "true">
-      </gmap-marker>
-    </gmap-map>
+  <div class="col-md-4">
+    <fieldset>
+      <legend>Booking</legend>
+    </fieldset>
   </div>
   <!--<div class="row">
     <table class="table">
@@ -88,7 +99,9 @@ export default {
       try{
         const {data} = await axios.post('http://localhost:4000/api/search/', {destination: this.Location, starttime: this.StartTime, endtime: this.EndTime}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
         this.parkings = data
-
+        
+        this.markers = []
+        
         data.forEach(item => {
           var temp = {
             position: {lat:item['latitude'], lng: item['longitude']}
@@ -102,10 +115,16 @@ export default {
     }
   },
   async created () {
-    
+    this.markers = []
     try {
       const {data} = await axios.get('http://localhost:4000/api/search/index', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
       this.parkings = data
+      data.forEach(item => {
+          var temp = {
+            position: {lat:item['latitude'], lng: item['longitude']}
+          }
+          this.markers.push(temp)            
+        });
       } catch (e) {
         console.log(e)
     }
