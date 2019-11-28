@@ -47,19 +47,19 @@
     <fieldset>
       <legend>Booking</legend>
       <div class="col-sm-12">
-        <label>Parking Title: </label>
+        <label>Parking Title: <span v-html="parkingObj.name"></span> </label>
       </div>
       <div class="col-sm-12">
-        <label>Parking Zone: </label>
+        <label>Parking Zone: {{parkingObj.catname}} </label>
       </div>
       <div class="col-sm-12">
-        <label>Free Minutes: </label>
+        <label>Free Minutes: {{parkingObj.freeminutes}} </label>
       </div>
       <div class="col-sm-12">
-        <label>Hourly Rate: </label>
+        <label>Hourly Rate: {{parkingObj.ratehour}} </label>
       </div>
       <div class="col-sm-12">
-        <label>Real Time Rate: </label>
+        <label>Real Time Rate: {{parkingObj.raterealtime}} </label>
       </div>
     </fieldset>
   </div>
@@ -107,6 +107,7 @@ export default {
         StartTime: '',
         EndTime: '',
         parkings: [],
+        parkingObj: {},
         center: {
           lat:58.3826467, 
           lng: 26.7321937
@@ -142,6 +143,7 @@ export default {
         this.infoWinOpen = true;
         this.currentMidx = idx;
       }
+      this.parkingObj = this.parkings[idx];
     },
     async parkingSearch() {
       try{
@@ -156,7 +158,8 @@ export default {
               lat:item['latitude'], 
               lng: item['longitude']
             },
-            infoText: '<strong>'+ item['name'] +'</strong>'
+            infoText: '<strong>'+ item['name'] +'</strong>',
+            catname: item["catname"] 
           }
           this.markers.push(temp)            
         });
