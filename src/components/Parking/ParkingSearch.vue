@@ -12,11 +12,12 @@
             </div>
             <div class="col-sm-3">
               <label for="inputStartTime" class="sr-only">Start Time</label>
-              <input v-model="StartTime" type="text" id="inputStartTime" class="form-control" placeholder="StartTime" required>
+              <date-picker v-model="date"></date-picker>
+              <!-- <input v-model="StartTime" type="text" id="inputStartTime" class="form-control date" placeholder="StartTime" required> -->
             </div>
             <div class="col-sm-3">
               <label for="inputEndTime" class="sr-only">EndTime</label>
-              <input v-model="EndTime" type="text" id="inputEndTime" class="form-control" placeholder="EndTime" required>
+              <input v-model="EndTime" type="text" id="inputEndTime" class="form-control date" placeholder="EndTime" required>
             </div>
             <div class="col-sm-3">
               <button class="btn btn-sm btn-primary btn-block" type="submit">Search</button>
@@ -92,17 +93,23 @@
 
 </div>
 </template>
-
+<!--
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.0/vue.js"></script>
   <script src="vue-google-maps.js"></script>
-
+-->
 <script>
+import datePicker from 'vue-bootstrap-datetimepicker';
+
+// You have to add CSS yourself
+import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css';
+
 import axios from 'axios'
 
 export default {
   name: 'ParkingSearch',
   data () {
     return {
+        date: new Date(), 
         Location: '',
         StartTime: '',
         EndTime: '',
@@ -129,6 +136,9 @@ export default {
           }
         ]
     }
+  },
+  components:{
+    datePicker
   },
   methods: {
     toggleInfoWindow: function(marker, idx) {
@@ -172,6 +182,7 @@ export default {
   async created () {
     this.markers = []
     try {
+      // $('.date').datetimepicker();
       const {data} = await axios.get('http://localhost:4000/api/search/index', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
       this.parkings = data
       data.forEach(item => {
