@@ -46,6 +46,21 @@
   <div class="col-md-4">
     <fieldset>
       <legend>Booking</legend>
+      <div class="col-sm-12">
+        <label>Parking Title: </label>
+      </div>
+      <div class="col-sm-12">
+        <label>Parking Zone: </label>
+      </div>
+      <div class="col-sm-12">
+        <label>Free Minutes: </label>
+      </div>
+      <div class="col-sm-12">
+        <label>Hourly Rate: </label>
+      </div>
+      <div class="col-sm-12">
+        <label>Real Time Rate: </label>
+      </div>
     </fieldset>
   </div>
   <!--<div class="row">
