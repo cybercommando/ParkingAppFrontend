@@ -65,11 +65,11 @@
         </div>  
         <div class="col-sm-6">
           <label for="extHourly">Estimated Hourly Rate:</label>
-          <input value="0" type="text" class="form-control" readonly>
+          <input v-model="HourlyPrice" type="text" class="form-control" readonly>
         </div>
         <div class="col-sm-6">
           <label for="estRealTime">Estimated RealTime Rate:</label>
-          <input value="0" type="text" class="form-control" readonly>
+          <input v-model="RealTimePrice" type="text" class="form-control" readonly>
         </div>
       </fieldset>
     </div>
@@ -175,7 +175,10 @@ export default {
         FinalLocation: '',
         FinalStartDate:'',
         FinalEndDate:  '',
-        FinalPaymentType: '1'
+        FinalPaymentType: '1',
+        // Price Calculation
+        HourlyPrice: '0',
+        RealTimePrice: '0'
     }
   },
   components:{
@@ -200,6 +203,26 @@ export default {
       this.FinalLocation = this.parkingObj.id;
       this.FinalStartDate = this.StartTime;
       this.FinalEndDate = this.EndTime;
+
+      //Calculating Price using time
+      if(this.EndTime != String.empty && this.StartTime != String.empty) {
+        function diff_hours(dt2, dt1) 
+        {
+          var diff =(dt2.getTime() - dt1.getTime()) / 1000;
+          diff /= (60 * 60);
+          return Math.abs(Math.round(diff));
+        }
+        function diff_mins(dt2, dt1) 
+        {
+          var diff =(dt2.getTime() - dt1.getTime()) / 1000;
+          diff /= (60);
+          return Math.abs(Math.round(diff));
+        }
+        var timeStart = new Date(this.StartTime);
+        var timeEnd = new Date(this.EndTime);
+        this.HourlyPrice = this.parkingObj.ratehour * diff_hours(timeStart,timeEnd)
+        this.RealTimePrice = this.parkingObj.raterealtime * Math.abs(Math.ceil((diff_mins(timeStart,timeEnd)/5)))
+      }
     },
     async parkingSearch() {
       try{

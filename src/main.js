@@ -8,7 +8,25 @@ import store from './store'
 import Axios from 'axios'
 
 import * as VueGoogleMaps from 'vue2-google-maps'
- 
+import moment from 'moment'
+
+Vue.filter('formatDate', function(value) {
+  if (value) {
+    return moment(String(value)).format('MM/DD/YYYY hh:mm')
+  }
+})
+
+Vue.filter('PaymentType', function(value) {
+  if (value) {
+    if (value == '1'){
+      return 'Hourly'
+    }
+    else if (value == '2') {
+      return 'Real Time'
+    }
+  }
+})
+
 Vue.use(VueGoogleMaps, {
   load: {
     key: 'AIzaSyDV_4kS5KvnmtEyWygXpGIe5GBDRv1k9Oc'
