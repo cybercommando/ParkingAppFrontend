@@ -7,29 +7,29 @@
         <form class="form-signin" @submit.prevent="parkingSearch">
           <div class="col-md-12">
             <div class="col-sm-3">
-              <label for="inputLocation" class="sr-only">Location</label>
+              <label for="inputLocation">Location</label>
               <input v-model="Location" type="text" id="inputLocation" class="form-control" placeholder="Location" required autofocus>
             </div>
             <div class="col-sm-3">
-              <label for="inputStartTime" class="sr-only">Start Time</label>
-              <date-picker v-model="date"></date-picker>
-              <!-- <input v-model="StartTime" type="text" id="inputStartTime" class="form-control date" placeholder="StartTime" required> -->
+              <label for="inputStartTime">Start Time</label>
+              <date-picker v-model="StartTime"></date-picker>
+              <!--enddate <input v-model="StartTime" type="text" id="inputStartTime" class="form-control date" placeholder="StartTime" required> -->
             </div>
             <div class="col-sm-3">
-              <label for="inputEndTime" class="sr-only">EndTime</label>
-              <input v-model="EndTime" type="text" id="inputEndTime" class="form-control date" placeholder="EndTime" required>
+              <label for="inputEndTime">EndTime</label>
+              <date-picker v-model="EndTime"></date-picker>
+              <!-- <input v-model="EndTime" type="text" id="inputEndTime" class="form-control date" placeholder="EndTime" required> -->
             </div>
             <div class="col-sm-3">
-              <button class="btn btn-sm btn-primary btn-block" type="submit">Search</button>
+              <button class="btn btn-sm btn-primary" type="submit">Search</button>
             </div>
-            
           </div>
         </form>
       </fieldset>
     </div>
     <div class="row">
+      <br />
       <fieldset>
-        <legend>Map</legend>
         <gmap-map v-bind:center = "center" v-bind:zoom= "12" style="height: 400px">
           <gmap-info-window v-bind:options="infoOptions" v-bind:position="infoWindowPos" v-bind:opened="infoWinOpen" @closeclick="infoWinOpen=false">
           </gmap-info-window>
@@ -45,24 +45,61 @@
     </div>
   </div>
   <div class="col-md-4">
-    <fieldset>
-      <legend>Booking</legend>
-      <div class="col-sm-12">
-        <label>Parking Title: <span v-html="parkingObj.name"></span> </label>
-      </div>
-      <div class="col-sm-12">
-        <label>Parking Zone: {{parkingObj.catname}} </label>
-      </div>
-      <div class="col-sm-12">
-        <label>Free Minutes: {{parkingObj.freeminutes}} </label>
-      </div>
-      <div class="col-sm-12">
-        <label>Hourly Rate: {{parkingObj.ratehour}} </label>
-      </div>
-      <div class="col-sm-12">
-        <label>Real Time Rate: {{parkingObj.raterealtime}} </label>
-      </div>
-    </fieldset>
+    <div class="col-sm-12">
+      <fieldset>
+        <legend>Location Details</legend>
+        <div class="col-sm-12">
+          <label>Parking Slot: {{parkingObj.name}} </label>
+        </div>
+        <div class="col-sm-12">
+          <label>Parking Zone: {{parkingObj.catname}} </label>
+        </div>
+        <div class="col-sm-12">
+          <label>Free Minutes: {{parkingObj.freeminutes}} </label>
+        </div>
+        <div class="col-sm-12">
+          <label>Hourly Rate: {{parkingObj.ratehour}} </label>
+        </div>
+        <div class="col-sm-12">
+          <label>Real Time Rate: {{parkingObj.raterealtime}} </label>
+        </div>  
+        <div class="col-sm-6">
+          <label for="extHourly">Estimated Hourly Rate:</label>
+          <input value="0" type="text" class="form-control" readonly>
+        </div>
+        <div class="col-sm-6">
+          <label for="estRealTime">Estimated RealTime Rate:</label>
+          <input value="0" type="text" class="form-control" readonly>
+        </div>
+      </fieldset>
+    </div>
+    <div class="col-sm-12">
+      <br />
+      <fieldset>
+        <legend>Booking Confirmation</legend>
+        <form class="form" @submit.prevent="parkingConfirmation">
+          <div class="col-md-12">
+            <input v-model="FinalLocation" type="text" id="inputLocation" class="form-control" placeholder="Location" required readonly style="display: none">
+            <input v-model="FinalStartDate" type="text" id="inputLocation" class="form-control" placeholder="Location" required readonly style="display: none">
+            <input v-model="FinalEndDate" type="text" id="inputLocation" class="form-control" placeholder="Location" required readonly style="display: none">
+            <div class="col-sm-12">
+              <label for="inputEndTime">Payment Type</label>
+              <!-- <input v-model="FinalPaymentType" type="text" id="inputEndTime" class="form-control date" placeholder="EndTime" required> -->
+              <select v-model="FinalPaymentType" class="form-control">
+                <option value="1" selected>Hourly</option>
+                <option value="2">Real Time</option>
+              </select>
+            </div>
+            <div class="col-sm-12">
+              <br />
+              <button class="btn btn-sm btn-success btn-block" type="submit">Confirm</button>
+            </div>
+            
+          </div>
+        </form>
+      </fieldset>
+    </div>
+    
   </div>
   <!--<div class="row">
     <table class="table">
@@ -93,15 +130,14 @@
 
 </div>
 </template>
-<!--
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.0/vue.js"></script>
-  <script src="vue-google-maps.js"></script>
--->
-<script>
-import datePicker from 'vue-bootstrap-datetimepicker';
 
+<script>
+import moment from 'moment';
+import datePicker from 'vue-bootstrap-datetimepicker';
 // You have to add CSS yourself
 import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css';
+// Bootstrap css  
+import 'bootstrap/dist/css/bootstrap.css';
 
 import axios from 'axios'
 
@@ -109,10 +145,9 @@ export default {
   name: 'ParkingSearch',
   data () {
     return {
-        date: new Date(), 
         Location: '',
-        StartTime: '',
-        EndTime: '',
+        StartTime: new Date(),
+        EndTime: new Date(),
         parkings: [],
         parkingObj: {},
         center: {
@@ -134,7 +169,13 @@ export default {
           {
             position: {lat:58.3826467, lng: 26.7321937}
           }
-        ]
+        ],
+        
+        //Confirmation DataFields
+        FinalLocation: '',
+        FinalStartDate:'',
+        FinalEndDate:  '',
+        FinalPaymentType: '1'
     }
   },
   components:{
@@ -154,6 +195,11 @@ export default {
         this.currentMidx = idx;
       }
       this.parkingObj = this.parkings[idx];
+      
+      //Setting Final Confirmation Details
+      this.FinalLocation = this.parkingObj.id;
+      this.FinalStartDate = this.StartTime;
+      this.FinalEndDate = this.EndTime;
     },
     async parkingSearch() {
       try{
@@ -176,6 +222,16 @@ export default {
 
       } catch(e) {
         console.log(e)
+      }
+    },
+    async parkingConfirmation (){
+      try{
+        const {data} = await axios.post('http://localhost:4000/api/bookings/new', {start_time: this.FinalStartDate, end_time: this.FinalEndDate, parking_id: this.FinalLocation, calc_criteria: this.FinalPaymentType}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+        this.parkings = data
+        alert('Booking Created')
+      } catch(e) {
+        console.log(e)
+        alert('Error:'+ e)
       }
     }
   },
