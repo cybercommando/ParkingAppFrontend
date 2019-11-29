@@ -23,7 +23,7 @@
                 <li><router-link to="/ParkingSearch">Search</router-link></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Booking</li>
-                <li><a href="/BookingList">My Bookings</a></li>
+                <li><router-link to="/BookingList">My Bookings</router-link></li>
               </ul>
             </li>
             <li><a href="#">Payment</a></li>

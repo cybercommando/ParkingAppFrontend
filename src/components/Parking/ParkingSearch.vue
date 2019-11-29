@@ -229,6 +229,7 @@ export default {
         const {data} = await axios.post('http://localhost:4000/api/bookings/new', {start_time: this.FinalStartDate, end_time: this.FinalEndDate, parking_id: this.FinalLocation, calc_criteria: this.FinalPaymentType}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
         this.parkings = data
         alert('Booking Created')
+        this.$router.push('/BookingList')
       } catch(e) {
         console.log(e)
         alert('Error:'+ e)
