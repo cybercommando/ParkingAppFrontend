@@ -108,6 +108,7 @@ export default {
               {
                     title: 'Are you sure?',
                     type: "warning",
+                    html: '<span class="text">Do you want to delete booking from '+ bookingObj.start_time + ' to '+ bookingObj.end_time +'</span>',
                     showCancelButton: true,
                     confirmButtonColor: "#DD6B55",
                     confirmButtonText: "Yes, cancel it!",
