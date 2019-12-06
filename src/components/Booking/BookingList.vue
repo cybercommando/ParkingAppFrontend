@@ -61,7 +61,7 @@
 </template>
 
 <script>
-// import moment from 'moment';
+import moment from 'moment';
 // import datePicker from 'vue-bootstrap-datetimepicker';
 // // You have to add CSS yourself
 // import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css';
@@ -74,6 +74,14 @@ import VueSweetAlert from 'vue-sweetalert'
 import axios from 'axios'
 
 Vue.use(VueSweetAlert)
+
+
+function formatDateFun(value){
+  if (value) {
+    return moment(String(value)).format('MM/DD/YYYY hh:mm')
+  }
+}
+
 
 export default {
   name: 'BookingList',
@@ -108,7 +116,7 @@ export default {
               {
                     title: 'Are you sure?',
                     type: "warning",
-                    html: '<span class="text">Do you want to delete booking from '+ bookingObj.start_time + ' to '+ bookingObj.end_time +'</span>',
+                    html: '<span class="text">Do you want to delete booking from '+ formatDateFun(bookingObj.start_time) + ' to '+ formatDateFun(bookingObj.end_time) +'</span>',
                     showCancelButton: true,
                     confirmButtonColor: "#DD6B55",
                     confirmButtonText: "Yes, cancel it!",
