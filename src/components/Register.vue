@@ -2,6 +2,8 @@
   <div class="login-wrapper border border-light">
     <form class="form-signin" @submit.prevent="userRegister">
       <h2 class="form-signin-heading">Sign Up</h2>
+      <label for="inputFullname" class="sr-only">Full Name</label>
+      <input v-model="user.full_name" type="text" id="inputFullname" class="form-control" placeholder="Full Name" required autofocus>
       <label for="inputUsername" class="sr-only">Username</label>
       <input v-model="user.username" type="text" id="inputUsername" class="form-control" placeholder="Username" required autofocus>      
       <label for="inputPassword" class="sr-only">Password</label>
@@ -25,6 +27,7 @@ export default {
   data () {
     return {
         user: {
+            full_name: '',
             username: '',
             password: '',
             age: '',
@@ -36,7 +39,7 @@ export default {
   methods: {
     userRegister() {
       try{
-        this.$store.dispatch('register', user)
+        this.$store.dispatch('register', this.user)
         .then(() => this.$router.push("/Dashboard"))
         .catch(err => {
           console.log(err)

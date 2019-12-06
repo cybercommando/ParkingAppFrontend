@@ -20,6 +20,7 @@ import ParkingSearch from '@/components/Parking/ParkingSearch'
 
 //Booking Components
 import BookingList from '@/components/Booking/BookingList'
+import ExtendBooking from '@/components/Booking/ExtendBooking'
 
 
 Vue.use(Router)
@@ -75,6 +76,11 @@ let router =  new Router({
           path: '/bookinglist',
           name: 'BookingList',
           component: BookingList
+        },
+        {
+          path: '/extendbooking/:bk',
+          name: 'ExtendBooking',
+          component: ExtendBooking
         }
       ]
     }

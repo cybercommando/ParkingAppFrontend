@@ -24,57 +24,24 @@
                 <td>
                     <!-- <button type="button" @click="btnExtendClick(booking.id)" class=" btn btn-sm btn-success">Extend</button> -->
                     <!-- <button type="button" @click="btnCancelClick(booking.id)" class=" btn btn-sm btn-danger">Cancel</button> -->
-                    <button type="button" @click="btnExtendClick(booking)" class=" btn btn-sm btn-success" data-toggle="modal" data-target="#extendModal">Extend</button>
+                    <button type="button" v-on:click="btnSelectBooking(booking)" class=" btn btn-sm btn-success">Extend</button>
                     <button type="button" v-on:click="btnCancelClick(booking)" class=" btn btn-sm btn-danger">Cancel</button>
                 </td>
             </tr>
         </tbody>
-    </table> 
-        <!-- Modal -->
-    <div id="extendModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Extend Booking</h4>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="usr">Extend Time:</label>
-                    <!-- <date-picker v-model="ExtendTime"></date-picker> -->
-                    <input type="text" class="form-control" id="usr">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success">
-                    <span class="glyphicon glyphicon-floppy-disk"></span> Save
-                </button>
-            </div>
-            </div>
-
-        </div>
-    </div>  
+    </table>
 </div>
 </template>
 
 <script>
 import moment from 'moment';
-// import datePicker from 'vue-bootstrap-datetimepicker';
-// // You have to add CSS yourself
-// import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css';
-// // Bootstrap css  
-// import 'bootstrap/dist/css/bootstrap.css';
-
-import Vue from 'vue'
-import VueSweetAlert from 'vue-sweetalert'
+import datePicker from 'vue-bootstrap-datetimepicker';
+// You have to add CSS yourself
+import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css';
+// Bootstrap css  
+import 'bootstrap/dist/css/bootstrap.css';
 
 import axios from 'axios'
-
-Vue.use(VueSweetAlert)
-
 
 function formatDateFun(value){
   if (value) {
@@ -95,8 +62,9 @@ export default {
         //     user_id: 0,
         //     parking_id: 0
         // },
-        // ExtendTime: new Date(),
+        ExtendTime: new Date(),
         bookingList: [],
+        selectedBooking: ''
     }
   },
   async created () {
@@ -108,56 +76,39 @@ export default {
       }
   },
   methods: {
-      btnExtendClick (bookingObj) {
-          console.log("bookingObj",bookingObj);
+      btnSelectBooking (booking) {
+          function diff_mins(dt2, dt1) {
+              var diff =(dt2.getTime() - dt1.getTime()) / 1000;
+              diff /= (60);
+              return Math.round(diff);
+          }
+          var nd = new Date();
+          var ed = new Date(booking.end_time);
+
+          if(diff_mins(ed,nd) <= 2){
+              alert('You cant extend time now');
+          } else if (booking.status === 'CANCELLED'){
+              alert('You cant extend time now');
+          }
+          else{
+              this.$router.push({ name: 'ExtendBooking', params: { bk: booking } })
+          }
+          this.selectedBooking = booking;
       },
-      btnCancelClick(bookingObj){
-          this.$swal(
-              {
-                    title: 'Are you sure?',
-                    type: "warning",
-                    html: '<span class="text">Do you want to delete booking from '+ formatDateFun(bookingObj.start_time) + ' to '+ formatDateFun(bookingObj.end_time) +'</span>',
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Yes, cancel it!",
-                    cancelButtonText: "No, keep safe!"
-              }, 
-                async function(isConfirm) {
-                    if (isConfirm) {
-                        // handle confirm
-                        try {
-                            const {data} = await axios.post('http://localhost:4000/api/bookings/cancel', {id: bookingObj.id}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
-                        } catch(e) {
-                            alert('Error:'+ e)
-                        }
-                        
-                        try {
-                            const {data} = await axios.get('http://localhost:4000/api/bookings/all', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
-                            this.bookingList = data
-                        } catch (e) {
-                            console.log(e)
-                        }
-                    } else {
-                        this.$swal("Cancelled", "Your booking is saved back to your list", "error");
-                        // handle all other cases
-                    }
-                }
-          )
-      }
-    //   async btnCancelClick(id){
-    //       try {
-    //           const {data} = await axios.post('http://localhost:4000/api/bookings/cancel', {id: id}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
-    //       } catch(e) {
-    //           alert('Error:'+ e)
-    //       }
+      async btnCancelClick(bookingObj){
+          try {
+              const {data} = await axios.post('http://localhost:4000/api/bookings/cancel', {id: bookingObj.id}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+          } catch(e) {
+              alert('Error:'+ e)
+          }
           
-    //       try {
-    //           const {data} = await axios.get('http://localhost:4000/api/bookings/all', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
-    //           this.bookingList = data
-    //       } catch (e) {
-    //           console.log(e)
-    //       }
-    //   }
+          try {
+              const {data} = await axios.get('http://localhost:4000/api/bookings/all', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+              this.bookingList = data
+          } catch (e) {
+              console.log(e)
+          }
+      }
   }
 }
 </script>
