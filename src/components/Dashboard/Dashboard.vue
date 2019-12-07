@@ -46,6 +46,9 @@
 </template>
 
 <script>
+
+import { Socket} from 'phoenix-socket'
+
 export default {
   name: 'Dashboard',
   data () {
@@ -61,6 +64,36 @@ export default {
         })
     }
   },
+  // Notification Engine using Phoenix Socket and Channel
+  mounted() { 
+      this.userID = localStorage.getItem('userID')
+      this.userName = localStorage.getItem('userName')
+      let socket = new Socket("ws://localhost:4000/socket")
+      socket.connect();
+      this.channel = socket.channel(`user:${this.userID}`)
+      this.channel.join()
+      this.channel.on('new_link_added', payload => {
+      this.$toasted.show('Hi '+ this.userName + " " + payload.link.data,{ 
+                      theme: "bubble", 
+                      position: "top-right", 
+                      duration : 10000,
+                      action : [
+                        {
+                        text : 'Ignore',
+                          onClick : (e, toastObject) => {
+                              toastObject.goAway(0);
+                      }}
+                        ,{
+                          text : 'Extend',
+                          push : { name: 'ExtendBooking', params: { bk: payload.link.booking } , // Not yet done completely
+                            // this will prevent toast from closing
+                            dontClose : true
+                          }
+
+    }]}
+    )
+      });
+    },
   created () {
     this.$router.push('/Home')
   }

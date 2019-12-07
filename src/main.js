@@ -1,6 +1,7 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
+import Toasted from 'vue-toasted';
 import App from './App'
 import router from './router'
 
@@ -33,6 +34,8 @@ Vue.use(VueGoogleMaps, {
   }
 })
 
+Vue.use(Toasted)
+
 Vue.prototype.$http = Axios;
 const token = localStorage.getItem('token')
 if (token) {
@@ -47,5 +50,6 @@ new Vue({
   router,
   components: { App },
   template: '<App/>',
-  store
+  store,
+  render: h => h(App)
 })
