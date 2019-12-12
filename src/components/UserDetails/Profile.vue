@@ -41,7 +41,7 @@ export default {
     },
     async created () {
         try {
-            const {data} = await axios.get('http://localhost:4000/api/my_account', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+            const {data} = await axios.get('https://parkingapp.gigalixirapp.com/api/my_account', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
             this.userData = data
         } catch (e) {
             console.log(e)
@@ -50,7 +50,7 @@ export default {
     methods: {
         async userUpdate() {
             try {
-                const {data} = await axios.post('http://localhost:4000/api/users/update', {id:this.userData.id,email:this.userData.email,address:this.userData.address,age:this.userData.age,is_active:this.userData.is_active,full_name:this.userData.full_name,usertype:this.userData.usertype,paymentpreference:this.userData.paymentpreference}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+                const {data} = await axios.post('https://parkingapp.gigalixirapp.com/api/users/update', {id:this.userData.id,email:this.userData.email,address:this.userData.address,age:this.userData.age,is_active:this.userData.is_active,full_name:this.userData.full_name,usertype:this.userData.usertype,paymentpreference:this.userData.paymentpreference}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
                 this.$toasted.show('Success: Settings Saved',{
                     theme: "outline",
                     position: "top-right", 

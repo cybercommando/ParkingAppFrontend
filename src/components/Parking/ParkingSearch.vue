@@ -231,7 +231,7 @@ export default {
     },
     async parkingSearch() {
       try{
-        const {data} = await axios.post('http://localhost:4000/api/search/', {destination: this.Location, starttime: this.StartTime, endtime: this.EndTime}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+        const {data} = await axios.post('https://parkingapp.gigalixirapp.com/api/search/', {destination: this.Location, starttime: this.StartTime, endtime: this.EndTime}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
         this.parkings = data
         
         this.markers = []
@@ -280,7 +280,7 @@ export default {
         
 
     //   try{
-    //     const {data} = await axios.post('http://localhost:4000/api/bookings/new', {start_time: this.FinalStartDate, end_time: this.FinalEndDate, parking_id: this.FinalLocation, calc_criteria: this.FinalPaymentType}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+    //     const {data} = await axios.post('https://parkingapp.gigalixirapp.com/api/bookings/new', {start_time: this.FinalStartDate, end_time: this.FinalEndDate, parking_id: this.FinalLocation, calc_criteria: this.FinalPaymentType}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
     //     this.parkings = data
     //     alert('Booking Created')
     //     this.$router.push('/BookingList')
@@ -294,7 +294,7 @@ export default {
     this.markers = []
     try {
       // $('.date').datetimepicker();
-      const {data} = await axios.get('http://localhost:4000/api/search/index', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+      const {data} = await axios.get('https://parkingapp.gigalixirapp.com/api/search/index', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
       this.parkings = data
       data.forEach(item => {
           var temp = {

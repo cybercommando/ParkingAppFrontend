@@ -4,7 +4,7 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
-let apiAddress = 'http://localhost:4000/api'
+let apiAddress = 'https://parkingapp.gigalixirapp.com/api'
 
 export default new Vuex.Store({
   state: {

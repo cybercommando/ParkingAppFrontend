@@ -76,7 +76,7 @@ export default {
   },
   async created () {
       try {
-          const {data} = await axios.get('http://localhost:4000/api/payments', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+          const {data} = await axios.get('https://parkingapp.gigalixirapp.com/api/payments', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
           this.paymentList = data
       } catch (e) {
           this.$toasted.show(e,{
@@ -87,7 +87,7 @@ export default {
                     })
       }
       try {
-          const {data} = await axios.get('http://localhost:4000/api/payments/pending', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+          const {data} = await axios.get('https://parkingapp.gigalixirapp.com/api/payments/pending', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
           this.paymentPendingList = data
       } catch (e) {
           this.$toasted.show(e,{
@@ -101,7 +101,7 @@ export default {
   methods: {
       async btnPaymentClick(paymentObj){
           try {
-              const {data} = await axios.post('http://localhost:4000/api/payments/updatestatus', {id:  paymentObj.id, status: 'COMPLETED'}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+              const {data} = await axios.post('https://parkingapp.gigalixirapp.com/api/payments/updatestatus', {id:  paymentObj.id, status: 'COMPLETED'}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
               this.$toasted.show('Success: Pending Payment Cleared',{
                     theme: "outline",
                     position: "top-right", 
@@ -116,7 +116,7 @@ export default {
           }
           
           try {
-                const {data} = await axios.get('http://localhost:4000/api/payments', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+                const {data} = await axios.get('https://parkingapp.gigalixirapp.com/api/payments', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
                 this.paymentList = data
             } catch (e) {
                 this.$toasted.show(e,{
@@ -127,7 +127,7 @@ export default {
                             })
             }
             try {
-                const {data} = await axios.get('http://localhost:4000/api/payments/pending', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+                const {data} = await axios.get('https://parkingapp.gigalixirapp.com/api/payments/pending', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
                 this.paymentPendingList = data
             } catch (e) {
                 this.$toasted.show(e,{

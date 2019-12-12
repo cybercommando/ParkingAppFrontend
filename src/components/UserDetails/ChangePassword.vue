@@ -28,7 +28,7 @@ export default {
     },
     async created () {
         try {
-            const {data} = await axios.get('http://localhost:4000/api/my_account', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+            const {data} = await axios.get('https://parkingapp.gigalixirapp.com/api/my_account', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
             this.userData = data
         } catch (e) {
             console.log(e)
@@ -38,7 +38,7 @@ export default {
         async userUpdatePassword() {
             try {
                 if(this.newPassword === this.newPasswordRetype){
-                    const {data} = await axios.post('http://localhost:4000/api/users/update', {id:this.userData.id,password:this.newPassword}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+                    const {data} = await axios.post('https://parkingapp.gigalixirapp.com/api/users/update', {id:this.userData.id,password:this.newPassword}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
                     this.$toasted.show('Success: Password Changed',{
                         theme: "outline",
                         position: "top-right", 

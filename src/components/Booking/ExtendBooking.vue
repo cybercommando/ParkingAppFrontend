@@ -93,7 +93,7 @@ export default {
         try{
             //Get Hourly Rate
             var parkingId = this.bookingDetails.parking_id
-            const {data} = await axios.post('http://localhost:4000/api/search/get_detail', {parking_id: parkingId}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+            const {data} = await axios.post('https://parkingapp.gigalixirapp.com/api/search/get_detail', {parking_id: parkingId}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
             var HRate = data.ratehour
             var oldEndTime = new Date(this.bookingDetails.end_time)
             var newEndTime = new Date(this.newEndTime)
@@ -112,9 +112,9 @@ export default {
     },
     async extendBookingPayment(){
         try {
-            await axios.post('http://localhost:4000/api/bookings/update', {id: this.bookingDetails.id, start_time: this.bookingDetails.start_time, end_time: this.newEndTime, calc_criteria: this.bookingDetails.calc_criteria}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+            await axios.post('https://parkingapp.gigalixirapp.com/api/bookings/update', {id: this.bookingDetails.id, start_time: this.bookingDetails.start_time, end_time: this.newEndTime, calc_criteria: this.bookingDetails.calc_criteria}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
             
-            await axios.post('http://localhost:4000/api/payments/create', {cardno: this.CardNumber, nameoncard: this.CardName, expirydate: this.ExpiryDate, cvv: this.CVV, amount: this.amount, status: 'COMPLETED', booking_id: this.bookingId}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+            await axios.post('https://parkingapp.gigalixirapp.com/api/payments/create', {cardno: this.CardNumber, nameoncard: this.CardName, expirydate: this.ExpiryDate, cvv: this.CVV, amount: this.amount, status: 'COMPLETED', booking_id: this.bookingId}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
             
             // alert('Your booking No: '+ this.bookingDetails.id +' is extended');
             this.$toasted.show('Success: Your booking No: '+ this.bookingDetails.id +' is Extended',{

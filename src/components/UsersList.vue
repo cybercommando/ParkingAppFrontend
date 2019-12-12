@@ -36,7 +36,7 @@ export default {
   },
   async created () {
       try {
-          const {data} = await axios.get('http://localhost:4000/api/users', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+          const {data} = await axios.get('https://parkingapp.gigalixirapp.com/api/users', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
           this.users = data
       } catch (e) {
           console.log(e)

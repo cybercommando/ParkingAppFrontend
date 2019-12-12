@@ -70,7 +70,7 @@ export default {
   },
   async created () {
       try {
-          const {data} = await axios.get('http://localhost:4000/api/bookings', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+          const {data} = await axios.get('https://parkingapp.gigalixirapp.com/api/bookings', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
           this.bookingList = data
       } catch (e) {
           console.log(e)
@@ -132,10 +132,10 @@ export default {
             var currentDatetime = new Date();
             try {
                 if(bookingObj.calc_criteria == '1'){
-                    await axios.post('http://localhost:4000/api/bookings/end', {id: bookingObj.id, end_time: currentDatetime}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+                    await axios.post('https://parkingapp.gigalixirapp.com/api/bookings/end', {id: bookingObj.id, end_time: currentDatetime}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
                 }else if(bookingObj.calc_criteria == '2'){
-                    await axios.post('http://localhost:4000/api/bookings/end', {id: bookingObj.id, end_time: currentDatetime}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
-                    const {data} = await axios.post('http://localhost:4000/api/search/get_detail', {parking_id: bookingObj.parking_id}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+                    await axios.post('https://parkingapp.gigalixirapp.com/api/bookings/end', {id: bookingObj.id, end_time: currentDatetime}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+                    const {data} = await axios.post('https://parkingapp.gigalixirapp.com/api/search/get_detail', {parking_id: bookingObj.parking_id}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
                     var rate = data.raterealtime
                     var date_start = formatDateFun(bookingObj.start_time)
                     var mins = Math.abs(Math.ceil((diff_mins(new Date(date_start),currentDatetime)/5)))
@@ -144,11 +144,11 @@ export default {
                     var RealTimePrice = rate * mins
 
                     //payments/updateamountRT
-                    await axios.post('http://localhost:4000/api/payments/updateamountRT', {booking_id: bookingObj.id,amount: RealTimePrice, status: 'PENDING'}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+                    await axios.post('https://parkingapp.gigalixirapp.com/api/payments/updateamountRT', {booking_id: bookingObj.id,amount: RealTimePrice, status: 'PENDING'}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
                     
                     //Redirection to payment
                     if(localStorage.getItem('paymentPreference') == 'EOP'){
-                        const {data} = await axios.post('http://localhost:4000/api/payments/updatestatusRT', {booking_id:  bookingObj.id, status: 'COMPLETED'}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+                        const {data} = await axios.post('https://parkingapp.gigalixirapp.com/api/payments/updatestatusRT', {booking_id:  bookingObj.id, status: 'COMPLETED'}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
                         this.$toasted.show('Amount is deducted from your account',{
                         theme: "outline",
                         position: "top-right", 
@@ -164,7 +164,7 @@ export default {
                     theme: "outline",
                     position: "top-right", 
                     duration : 2000 })
-                const {data} = await axios.get('http://localhost:4000/api/bookings', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+                const {data} = await axios.get('https://parkingapp.gigalixirapp.com/api/bookings', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
                 this.bookingList = data
             } catch(e) {
                 this.$toasted.show(e,{

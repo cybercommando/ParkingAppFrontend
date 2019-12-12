@@ -84,7 +84,7 @@ export default {
             this.paymentStatus = 'PENDING'
         }
         try {
-            const {data} = await axios.get('http://localhost:4000/api/my_account', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+            const {data} = await axios.get('https://parkingapp.gigalixirapp.com/api/my_account', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
             this.userData = data
         } catch (e) {
             console.log(e)
@@ -94,10 +94,10 @@ export default {
         async parkingConfirmation() {
             //Creating Booking
             try{
-                const {data} = await axios.post('http://localhost:4000/api/bookings/new', {start_time: this.bookingData.start_time, end_time: this.bookingData.end_time, parking_id: this.bookingData.parking_id, calc_criteria: this.bookingData.calc_criteria}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+                const {data} = await axios.post('https://parkingapp.gigalixirapp.com/api/bookings/new', {start_time: this.bookingData.start_time, end_time: this.bookingData.end_time, parking_id: this.bookingData.parking_id, calc_criteria: this.bookingData.calc_criteria}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
                 this.bookingId = data.id
                 
-                await axios.post('http://localhost:4000/api/payments/create', {cardno: this.CardNumber, nameoncard: this.CardName, expirydate: this.ExpiryDate, cvv: this.CVV, amount: this.amount, status: this.paymentStatus, booking_id: this.bookingId}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+                await axios.post('https://parkingapp.gigalixirapp.com/api/payments/create', {cardno: this.CardNumber, nameoncard: this.CardName, expirydate: this.ExpiryDate, cvv: this.CVV, amount: this.amount, status: this.paymentStatus, booking_id: this.bookingId}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
                 
                 this.$toasted.show('Success: Booking Confirmed',{
                     theme: "outline",
