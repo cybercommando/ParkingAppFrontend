@@ -210,7 +210,9 @@ export default {
         {
           var diff =(dt2.getTime() - dt1.getTime()) / 1000;
           diff /= (60 * 60);
-          return Math.abs(Math.round(diff));
+        //   return Math.abs(Math.ceil(diff));
+        //   return Math.abs(diff);
+          return Math.ceil(Math.abs(diff));
         }
         function diff_mins(dt2, dt1) 
         {

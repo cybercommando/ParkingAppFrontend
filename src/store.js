@@ -38,6 +38,7 @@ export default new Vuex.Store({
           const token = resp.data.jwt
           const user = resp.data.user
           localStorage.setItem('token', token)
+          localStorage.setItem('userDetails', user)
           localStorage.setItem('userID', user.user_id)
           localStorage.setItem('userName', user.username)
           axios.defaults.headers.common['Authorization'] = token
@@ -47,6 +48,9 @@ export default new Vuex.Store({
         .catch(err => {
           commit('auth_error')
           localStorage.removeItem('token')
+          localStorage.removeItem('userDetails')
+          localStorage.removeItem('userID')
+          localStorage.removeItem('userName')
           reject(err)
         })
       })
@@ -59,6 +63,9 @@ export default new Vuex.Store({
           const token = resp.data.jwt
           const user = resp.data.user
           localStorage.setItem('token', token)
+          localStorage.setItem('userDetails', user)
+          localStorage.setItem('userID', user.user_id)
+          localStorage.setItem('userName', user.username)
           axios.defaults.headers.common['Authorization'] = token
           commit('auth_success', token, user)
           resolve(resp)
@@ -66,6 +73,9 @@ export default new Vuex.Store({
         .catch(err => {
           commit('auth_error', err)
           localStorage.removeItem('token')
+          localStorage.removeItem('userDetails')
+          localStorage.removeItem('userID')
+          localStorage.removeItem('userName')
           reject(err)
         })
       })
@@ -74,6 +84,9 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         commit('logout')
         localStorage.removeItem('token')
+        localStorage.removeItem('userDetails')
+        localStorage.removeItem('userID')
+        localStorage.removeItem('userName')
         delete axios.defaults.headers.common['Authorization']
         resolve()
       })

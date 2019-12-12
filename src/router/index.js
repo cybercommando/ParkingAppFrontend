@@ -14,6 +14,9 @@ import Signup from '@/components/Register'
 import UsersList from '@/components/UsersList'
 import store from '../store'
 
+import Profile from '@/components/UserDetails/Profile'
+import ChangePassword from '@/components/UserDetails/ChangePassword'
+
 //Parking Components
 import ParkingList from '@/components/Parking/ParkingList'
 import ParkingSearch from '@/components/Parking/ParkingSearch'
@@ -56,6 +59,16 @@ let router =  new Router({
           path: '/Home',
           name: 'Home',
           component: Home
+        },
+        {
+          path: '/Profile',
+          name: 'Profile',
+          component: Profile
+        },
+        {
+          path: '/ChangePassword',
+          name: 'ChangePassword',
+          component: ChangePassword
         },
         {
           path: '/userslist',

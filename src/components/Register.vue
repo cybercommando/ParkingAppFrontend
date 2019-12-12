@@ -32,7 +32,8 @@ export default {
             password: '',
             age: '',
             address: '',
-            email: ''
+            email: '',
+            paymentpreference: 'EOP'
         }
     }
   },

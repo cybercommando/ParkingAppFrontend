@@ -10,11 +10,10 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">ParkingApp |</a>
+          <router-link class="navbar-brand" to="/Home">ParkingApp |</router-link>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><router-link to="/Home">Home</router-link></li>
             <li><router-link to="/UsersList">Users</router-link></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Parking <span class="caret"></span></a>
@@ -29,7 +28,15 @@
             <li><a href="#">Payment</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a @click="logout">Logout</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{user_fullname}} <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><router-link to="/Profile">Profile</router-link></li>
+                <li><router-link to="/ChangePassword">Change Password</router-link></li>
+                <li role="separator" class="divider"></li>
+                <li><a @click="logout">Logout</a></li>
+              </ul>
+            </li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -53,7 +60,8 @@ export default {
   name: 'Dashboard',
   data () {
     return {
-      msg: 'Welcome to Parking App'
+      msg: 'Welcome to Parking App',
+      user_fullname: ''
     }
   },
   methods: {
@@ -96,6 +104,7 @@ export default {
     },
   created () {
     this.$router.push('/Home')
+    this.user_fullname = localStorage.getItem('userName')
   }
 }
 </script>
