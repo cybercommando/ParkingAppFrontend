@@ -41,6 +41,7 @@ export default new Vuex.Store({
           localStorage.setItem('userDetails', user)
           localStorage.setItem('userID', user.user_id)
           localStorage.setItem('userName', user.username)
+          localStorage.setItem('paymentPreference', user.paymentpreference)
           axios.defaults.headers.common['Authorization'] = token
           commit('auth_success', token, user)
           resolve(resp)
@@ -51,6 +52,7 @@ export default new Vuex.Store({
           localStorage.removeItem('userDetails')
           localStorage.removeItem('userID')
           localStorage.removeItem('userName')
+          localStorage.removeItem('paymentPreference')
           reject(err)
         })
       })
@@ -66,6 +68,7 @@ export default new Vuex.Store({
           localStorage.setItem('userDetails', user)
           localStorage.setItem('userID', user.user_id)
           localStorage.setItem('userName', user.username)
+          localStorage.setItem('paymentPreference', user.paymentpreference)
           axios.defaults.headers.common['Authorization'] = token
           commit('auth_success', token, user)
           resolve(resp)
@@ -76,6 +79,7 @@ export default new Vuex.Store({
           localStorage.removeItem('userDetails')
           localStorage.removeItem('userID')
           localStorage.removeItem('userName')
+          localStorage.removeItem('paymentPreference')
           reject(err)
         })
       })
@@ -87,6 +91,7 @@ export default new Vuex.Store({
         localStorage.removeItem('userDetails')
         localStorage.removeItem('userID')
         localStorage.removeItem('userName')
+        localStorage.removeItem('paymentPreference')
         delete axios.defaults.headers.common['Authorization']
         resolve()
       })

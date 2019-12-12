@@ -46,7 +46,7 @@ import axios from 'axios'
 
 function formatDateFun(value){
   if (value) {
-    return moment(String(value)).format('MM/DD/YYYY hh:mm:ss')
+    return moment(String(value)).format('MM/DD/YYYY hh:mm:ss a')
   }
 }
 
@@ -138,12 +138,23 @@ export default {
                     const {data} = await axios.post('http://localhost:4000/api/search/get_detail', {parking_id: bookingObj.parking_id}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
                     var rate = data.raterealtime
                     var date_start = formatDateFun(bookingObj.start_time)
+                    var mins = Math.abs(Math.ceil((diff_mins(new Date(date_start),currentDatetime)/5)))
                     
                     //Calculating Price
-                    var RealTimePrice = rate * Math.abs(Math.ceil((diff_mins(new Date(date_start),currentDatetime)/5)))
+                    var RealTimePrice = rate * mins
 
                     //payments/updateamountRT
                     await axios.post('http://localhost:4000/api/payments/updateamountRT', {booking_id: bookingObj.id,amount: RealTimePrice, status: 'PENDING'}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+                    
+                    //Redirection to payment
+                    if(localStorage.getItem('token') == 'EOP'){
+                        this.$router.push('/PaymentHistory')
+                    }else {
+                        this.$toasted.show('Payment Preference is: Monthly Payment (You will can pay After )',{
+                        theme: "outline",
+                        position: "top-right", 
+                        duration : 2000 })
+                    }
                 }
                 this.$toasted.show('Success: Booking End',{
                     theme: "outline",
