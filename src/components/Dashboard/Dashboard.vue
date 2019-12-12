@@ -25,7 +25,7 @@
                 <li><router-link to="/BookingList">My Bookings</router-link></li>
               </ul>
             </li>
-            <li><a href="#">Payment</a></li>
+            <li><router-link to="/PaymentConfirm">Payment</router-link></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
@@ -103,8 +103,8 @@ export default {
       });
     },
   created () {
-    this.$router.push('/Home')
     this.user_fullname = localStorage.getItem('userName')
+    this.$router.push('/Home')
   }
 }
 </script>

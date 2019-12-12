@@ -25,6 +25,8 @@ import ParkingSearch from '@/components/Parking/ParkingSearch'
 import BookingList from '@/components/Booking/BookingList'
 import ExtendBooking from '@/components/Booking/ExtendBooking'
 
+//Payment Components
+import PaymentConfirm from '@/components/Payment/PaymentConfirm'
 
 Vue.use(Router)
 
@@ -84,6 +86,11 @@ let router =  new Router({
           path: '/parkingsearch',
           name: 'ParkingSearch',
           component: ParkingSearch
+        },
+        {
+          path: '/PaymentConfirm/:bd',
+          name: 'PaymentConfirm',
+          component: PaymentConfirm
         },
         {
           path: '/bookinglist',

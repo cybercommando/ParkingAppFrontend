@@ -77,7 +77,7 @@
       <br />
       <fieldset>
         <legend>Booking Confirmation</legend>
-        <form class="form" @submit.prevent="parkingConfirmation">
+        <form class="form" @submit.prevent="parkingPayment">
           <div class="col-md-12">
             <input v-model="FinalLocation" type="text" id="inputLocation" class="form-control" placeholder="Location" required readonly style="display: none">
             <input v-model="FinalStartDate" type="text" id="inputLocation" class="form-control" placeholder="Location" required readonly style="display: none">
@@ -92,7 +92,7 @@
             </div>
             <div class="col-sm-12">
               <br />
-              <button class="btn btn-sm btn-success btn-block" type="submit">Confirm</button>
+              <button class="btn btn-sm btn-success btn-block" type="submit">Payment</button>
             </div>
             
           </div>
@@ -178,7 +178,10 @@ export default {
         FinalPaymentType: '1',
         // Price Calculation
         HourlyPrice: '0',
-        RealTimePrice: '0'
+        RealTimePrice: '0',
+
+        //Booking Data
+        BookingData: {}
     }
   },
   components:{
@@ -249,16 +252,25 @@ export default {
         console.log(e)
       }
     },
-    async parkingConfirmation (){
-      try{
-        const {data} = await axios.post('http://localhost:4000/api/bookings/new', {start_time: this.FinalStartDate, end_time: this.FinalEndDate, parking_id: this.FinalLocation, calc_criteria: this.FinalPaymentType}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
-        this.parkings = data
-        alert('Booking Created')
-        this.$router.push('/BookingList')
-      } catch(e) {
-        console.log(e)
-        alert('Error:'+ e)
-      }
+    parkingPayment (){
+        this.BookingData.start_time= this.FinalStartDate
+        this.BookingData.end_time= this.FinalEndDate
+        this.BookingData.parking_id= this.FinalLocation
+        this.BookingData.calc_criteria= this.FinalPaymentType
+        this.BookingData.ParkingSlotDetails= this.parkingObj
+        this.BookingData.hourlyprice= this.HourlyPrice
+        this.BookingData.realtimeprice= this.RealTimePrice
+
+        this.$router.push({ name: 'PaymentConfirm', params: { bd: this.BookingData }})
+    //   try{
+    //     const {data} = await axios.post('http://localhost:4000/api/bookings/new', {start_time: this.FinalStartDate, end_time: this.FinalEndDate, parking_id: this.FinalLocation, calc_criteria: this.FinalPaymentType}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+    //     this.parkings = data
+    //     alert('Booking Created')
+    //     this.$router.push('/BookingList')
+    //   } catch(e) {
+    //     console.log(e)
+    //     alert('Error:'+ e)
+    //   }
     }
   },
   async created () {

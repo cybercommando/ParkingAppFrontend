@@ -69,7 +69,7 @@ export default {
   },
   async created () {
       try {
-          const {data} = await axios.get('http://localhost:4000/api/bookings/all', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+          const {data} = await axios.get('http://localhost:4000/api/bookings', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
           this.bookingList = data
       } catch (e) {
           console.log(e)
@@ -103,7 +103,7 @@ export default {
           }
           
           try {
-              const {data} = await axios.get('http://localhost:4000/api/bookings/all', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+              const {data} = await axios.get('http://localhost:4000/api/bookings', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
               this.bookingList = data
           } catch (e) {
               console.log(e)
