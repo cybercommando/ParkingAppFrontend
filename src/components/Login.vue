@@ -8,7 +8,7 @@
       <input v-model="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
       <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
       <h4 class="err-message">{{err_message}}</h4>
-      <button @click="signUp">signup ?</button>
+      <button id="button1" @click="signUp">signup ?</button>
     </form>
   </div>
 </template>
