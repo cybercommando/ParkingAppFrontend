@@ -27,6 +27,7 @@ import ExtendBooking from '@/components/Booking/ExtendBooking'
 
 //Payment Components
 import PaymentConfirm from '@/components/Payment/PaymentConfirm'
+import PaymentHistory from '@/components/Payment/PaymentHistory'
 
 Vue.use(Router)
 
@@ -91,6 +92,11 @@ let router =  new Router({
           path: '/PaymentConfirm/:bd',
           name: 'PaymentConfirm',
           component: PaymentConfirm
+        },
+        {
+          path: '/PaymentHistory',
+          name: 'PaymentHistory',
+          component: PaymentHistory
         },
         {
           path: '/bookinglist',

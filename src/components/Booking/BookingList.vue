@@ -25,7 +25,7 @@
                     <!-- <button type="button" @click="btnExtendClick(booking.id)" class=" btn btn-sm btn-success">Extend</button> -->
                     <!-- <button type="button" @click="btnCancelClick(booking.id)" class=" btn btn-sm btn-danger">Cancel</button> -->
                     <button type="button" v-on:click="btnSelectBooking(booking)" class=" btn btn-sm btn-success">Extend</button>
-                    <button type="button" v-on:click="btnCancelClick(booking)" class=" btn btn-sm btn-danger">Cancel</button>
+                    <button type="button" v-on:click="btnCancelClick(booking)" class=" btn btn-sm btn-danger">End</button>
                 </td>
             </tr>
         </tbody>
@@ -86,9 +86,20 @@ export default {
           var ed = new Date(booking.end_time);
 
           if(diff_mins(ed,nd) <= 2){
-              alert('You cant extend time now');
+              
+              this.$toasted.show('Error: You cant extend time now',{
+                    type: "Error",
+                    theme: "bubble", 
+                    position: "top-right", 
+                    duration : 2000
+                })
           } else if (booking.status === 'CANCELLED'){
-              alert('You cant extend time now');
+              this.$toasted.show('Error: You cant extend time now',{
+                    type: "Error",
+                    theme: "bubble", 
+                    position: "top-right", 
+                    duration : 2000
+                })
           }
           else{
               this.$router.push({ name: 'ExtendBooking', params: { bk: booking } })
@@ -99,7 +110,12 @@ export default {
           try {
               const {data} = await axios.post('http://localhost:4000/api/bookings/cancel', {id: bookingObj.id}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
           } catch(e) {
-              alert('Error:'+ e)
+              this.$toasted.show(e,{
+                    type: "Error",
+                    theme: "bubble", 
+                    position: "top-right", 
+                    duration : 2000
+                })
           }
           
           try {
@@ -107,6 +123,12 @@ export default {
               this.bookingList = data
           } catch (e) {
               console.log(e)
+              this.$toasted.show(e,{
+                    type: "Error",
+                    theme: "bubble", 
+                    position: "top-right", 
+                    duration : 2000
+                })
           }
       }
   }

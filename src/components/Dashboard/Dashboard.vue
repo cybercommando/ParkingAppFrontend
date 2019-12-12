@@ -25,7 +25,7 @@
                 <li><router-link to="/BookingList">My Bookings</router-link></li>
               </ul>
             </li>
-            <li><router-link to="/PaymentConfirm">Payment</router-link></li>
+            <li><router-link to="/PaymentHistory">Payment</router-link></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
