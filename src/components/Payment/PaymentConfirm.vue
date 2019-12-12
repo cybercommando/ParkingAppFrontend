@@ -27,7 +27,7 @@
         <div class="col-lg-12">
             <fieldset>
             <legend>Payment Details</legend>
-            <form class="form-signin" @submit.prevent="parkingConfirmation">
+            <form @submit.prevent="parkingConfirmation">
                 <div class="col-md-5">
                     <div class="col-sm-12">
                         <label for="CardName">Name on Card</label>

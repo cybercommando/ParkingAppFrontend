@@ -4,7 +4,7 @@
     <div class="row">
       <fieldset>
         <legend>Search Parkings</legend>
-        <form class="form-signin" @submit.prevent="parkingSearch">
+        <form @submit.prevent="parkingSearch">
           <div class="col-md-12">
             <div class="col-sm-3">
               <label for="inputLocation">Location</label>

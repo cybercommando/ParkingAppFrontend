@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form class="form-signin" @submit.prevent="userUpdate">
+        <form @submit.prevent="userUpdate">
             <fieldset>
                 <legend>Personal Information</legend>
                 <label for="inputUsername" >Username</label>
@@ -24,7 +24,7 @@
                 </select>
             </fieldset>
             <hr />
-            <button class="btn btn-lg btn-primary" style="float: right" type="submit">Save</button>
+            <button class="btn btn-lg btn-primary" id="saveButton" style="float: right" type="submit">Save</button>
         </form>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form class="form-signin" @submit.prevent="userUpdatePassword">
+        <form @submit.prevent="userUpdatePassword">
             <fieldset>
                 <legend>Change Password</legend>
                 <label for="newPassword" >New Password</label>
