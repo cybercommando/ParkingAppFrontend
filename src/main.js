@@ -30,7 +30,7 @@ Vue.filter('PaymentType', function(value) {
 
 Vue.use(VueGoogleMaps, {
   load: {
-    key: 'AIzaSyDV_4kS5KvnmtEyWygXpGIe5GBDRv1k9Oc'
+    key: 'AIzaSyBUf0psS44CFySCwKi48Buw0LAHE1sOwq0'
   }
 })
 
