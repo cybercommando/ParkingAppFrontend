@@ -16,7 +16,7 @@
           <ul class="nav navbar-nav">
             <li><router-link to="/UsersList">Users</router-link></li>
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Parking <span class="caret"></span></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Parkings <span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><router-link to="/ParkingList">Parking List</router-link></li>
                 <li><router-link to="/ParkingSearch">Search</router-link></li>

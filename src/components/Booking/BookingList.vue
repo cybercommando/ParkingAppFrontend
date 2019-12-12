@@ -147,8 +147,12 @@ export default {
                     await axios.post('http://localhost:4000/api/payments/updateamountRT', {booking_id: bookingObj.id,amount: RealTimePrice, status: 'PENDING'}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
                     
                     //Redirection to payment
-                    if(localStorage.getItem('token') == 'EOP'){
-                        this.$router.push('/PaymentHistory')
+                    if(localStorage.getItem('paymentPreference') == 'EOP'){
+                        const {data} = await axios.post('http://localhost:4000/api/payments/updatestatusRT', {booking_id:  bookingObj.id, status: 'COMPLETED'}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+                        this.$toasted.show('Amount is deducted from your account',{
+                        theme: "outline",
+                        position: "top-right", 
+                        duration : 5000 })
                     }else {
                         this.$toasted.show('Payment Preference is: Monthly Payment (You will can pay After )',{
                         theme: "outline",

@@ -261,7 +261,24 @@ export default {
         this.BookingData.hourlyprice= this.HourlyPrice
         this.BookingData.realtimeprice= this.RealTimePrice
 
-        this.$router.push({ name: 'PaymentConfirm', params: { bd: this.BookingData }})
+        if(this.FinalPaymentType == '1' ){
+            if(this.BookingData.end_time == String.empty){
+                this.$toasted.show('Error: Please Enter a Valid End Time for Hourly Payment',{
+                        type: "Error",
+                        theme: "bubble", 
+                        position: "top-right", 
+                        duration : 2000
+                    })
+            }
+            else{
+                this.$router.push({ name: 'PaymentConfirm', params: { bd: this.BookingData }})
+            }
+        }else{
+            this.$router.push({ name: 'PaymentConfirm', params: { bd: this.BookingData }})
+        }
+
+        
+
     //   try{
     //     const {data} = await axios.post('http://localhost:4000/api/bookings/new', {start_time: this.FinalStartDate, end_time: this.FinalEndDate, parking_id: this.FinalLocation, calc_criteria: this.FinalPaymentType}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
     //     this.parkings = data
