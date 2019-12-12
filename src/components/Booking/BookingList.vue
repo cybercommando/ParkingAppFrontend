@@ -25,7 +25,8 @@
                     <!-- <button type="button" @click="btnExtendClick(booking.id)" class=" btn btn-sm btn-success">Extend</button> -->
                     <!-- <button type="button" @click="btnCancelClick(booking.id)" class=" btn btn-sm btn-danger">Cancel</button> -->
                     <button type="button" v-on:click="btnSelectBooking(booking)" class=" btn btn-sm btn-success">Extend</button>
-                    <button type="button" v-on:click="btnCancelClick(booking)" class=" btn btn-sm btn-danger">End</button>
+                    <!-- <button type="button" v-on:click="btnCancelClick(booking)" class=" btn btn-sm btn-danger">End</button> -->
+                    <button type="button" v-on:click="btnEndClick(booking)" class=" btn btn-sm btn-danger">End</button>
                 </td>
             </tr>
         </tbody>
@@ -45,7 +46,7 @@ import axios from 'axios'
 
 function formatDateFun(value){
   if (value) {
-    return moment(String(value)).format('MM/DD/YYYY hh:mm')
+    return moment(String(value)).format('MM/DD/YYYY hh:mm:ss')
   }
 }
 
@@ -100,35 +101,64 @@ export default {
                     position: "top-right", 
                     duration : 2000
                 })
+          } else if (booking.calc_criteria == '2'){
+              this.$toasted.show('Error: Realtime Booking type cant Extend',{
+                    type: "Error",
+                    theme: "bubble", 
+                    position: "top-right", 
+                    duration : 2000
+                })
           }
           else{
               this.$router.push({ name: 'ExtendBooking', params: { bk: booking } })
           }
           this.selectedBooking = booking;
       },
-      async btnCancelClick(bookingObj){
-          try {
-              const {data} = await axios.post('http://localhost:4000/api/bookings/cancel', {id: bookingObj.id}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
-          } catch(e) {
-              this.$toasted.show(e,{
-                    type: "Error",
-                    theme: "bubble", 
+      async btnEndClick(bookingObj){
+          if( bookingObj.status == 'COMPLETED' || bookingObj.status == 'CANCELLED'){
+              this.$toasted.show('Error: Completed Bookings can not be Ended Again !!!',{
+                        type: "Error",
+                        theme: "bubble", 
+                        position: "top-right", 
+                        duration : 2000
+                    })
+          }else {
+            function diff_mins(dt2, dt1) 
+            {
+                var diff =(dt2.getTime() - dt1.getTime()) / 1000;
+                diff /= (60);
+                return Math.abs(Math.round(diff));
+            }
+            var currentDatetime = new Date();
+            try {
+                if(bookingObj.calc_criteria == '1'){
+                    await axios.post('http://localhost:4000/api/bookings/end', {id: bookingObj.id, end_time: currentDatetime}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+                }else if(bookingObj.calc_criteria == '2'){
+                    await axios.post('http://localhost:4000/api/bookings/end', {id: bookingObj.id, end_time: currentDatetime}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+                    const {data} = await axios.post('http://localhost:4000/api/search/get_detail', {parking_id: bookingObj.parking_id}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+                    var rate = data.raterealtime
+                    var date_start = formatDateFun(bookingObj.start_time)
+                    
+                    //Calculating Price
+                    var RealTimePrice = rate * Math.abs(Math.ceil((diff_mins(new Date(date_start),currentDatetime)/5)))
+
+                    //payments/updateamountRT
+                    await axios.post('http://localhost:4000/api/payments/updateamountRT', {booking_id: bookingObj.id,amount: RealTimePrice, status: 'PENDING'}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+                }
+                this.$toasted.show('Success: Booking End',{
+                    theme: "outline",
                     position: "top-right", 
-                    duration : 2000
-                })
-          }
-          
-          try {
-              const {data} = await axios.get('http://localhost:4000/api/bookings', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
-              this.bookingList = data
-          } catch (e) {
-              console.log(e)
-              this.$toasted.show(e,{
-                    type: "Error",
-                    theme: "bubble", 
-                    position: "top-right", 
-                    duration : 2000
-                })
+                    duration : 2000 })
+                const {data} = await axios.get('http://localhost:4000/api/bookings', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+                this.bookingList = data
+            } catch(e) {
+                this.$toasted.show(e,{
+                        type: "Error",
+                        theme: "bubble", 
+                        position: "top-right", 
+                        duration : 2000
+                    })
+            }
           }
       }
   }

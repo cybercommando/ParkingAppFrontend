@@ -1,7 +1,7 @@
 <template>
 <div class="row">
     <div class="col-lg-12">
-        <h3 style="text-align: center">Pending List</h3>
+        <h3 style="text-align: center">Pending Payments</h3>
         <table class="table">
             <thead>
                 <tr>
@@ -25,7 +25,7 @@
                     <td>
                         <!-- <button type="button" @click="btnExtendClick( payment.id)" class=" btn btn-sm btn-success">Extend</button> -->
                         <!-- <button type="button" @click="btnCancelClick( payment.id)" class=" btn btn-sm btn-danger">Cancel</button> -->
-                        <button type="button" v-on:click="btnSelectpayment( payment)" class=" btn btn-sm btn-success">Pay It</button>
+                        <button type="button" v-on:click="btnPaymentClick(payment)" class=" btn btn-sm btn-success">Pay It</button>
                         <!-- <button type="button" v-on:click="btnCancelClick( payment)" class=" btn btn-sm btn-danger">Cancel</button> -->
                     </td>
                 </tr>
@@ -79,48 +79,64 @@ export default {
           const {data} = await axios.get('http://localhost:4000/api/payments', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
           this.paymentList = data
       } catch (e) {
-          console.log(e)
+          this.$toasted.show(e,{
+                        type: "Error",
+                        theme: "bubble", 
+                        position: "top-right", 
+                        duration : 2000
+                    })
       }
       try {
           const {data} = await axios.get('http://localhost:4000/api/payments/pending', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
           this.paymentPendingList = data
       } catch (e) {
-          console.log(e)
+          this.$toasted.show(e,{
+                        type: "Error",
+                        theme: "bubble", 
+                        position: "top-right", 
+                        duration : 2000
+                    })
       }
   },
   methods: {
-      btnSelectpayment ( payment) {
-          function diff_mins(dt2, dt1) {
-              var diff =(dt2.getTime() - dt1.getTime()) / 1000;
-              diff /= (60);
-              return Math.round(diff);
-          }
-          var nd = new Date();
-          var ed = new Date( payment.end_time);
-
-          if(diff_mins(ed,nd) <= 2){
-              alert('You cant extend time now');
-          } else if ( payment.status === 'CANCELLED'){
-              alert('You cant extend time now');
-          }
-          else{
-              this.$router.push({ name: 'Extend payment', params: { bk:  payment } })
-          }
-          this.selectedpayment =  payment;
-      },
-      async btnCancelClick( paymentObj){
+      async btnPaymentClick(paymentObj){
           try {
-              const {data} = await axios.post('http://localhost:4000/api/ payments/cancel', {id:  paymentObj.id}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+              const {data} = await axios.post('http://localhost:4000/api/payments/updatestatus', {id:  paymentObj.id, status: 'COMPLETED'}, { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+              this.$toasted.show('Success: Pending Payment Cleared',{
+                    theme: "outline",
+                    position: "top-right", 
+                    duration : 2000 })
           } catch(e) {
-              alert('Error:'+ e)
+              this.$toasted.show(e,{
+                        type: "Error",
+                        theme: "bubble", 
+                        position: "top-right", 
+                        duration : 2000
+                    })
           }
           
           try {
-              const {data} = await axios.get('http://localhost:4000/api/ payments', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
-              this. paymentList = data
-          } catch (e) {
-              console.log(e)
-          }
+                const {data} = await axios.get('http://localhost:4000/api/payments', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+                this.paymentList = data
+            } catch (e) {
+                this.$toasted.show(e,{
+                                type: "Error",
+                                theme: "bubble", 
+                                position: "top-right", 
+                                duration : 2000
+                            })
+            }
+            try {
+                const {data} = await axios.get('http://localhost:4000/api/payments/pending', { headers: {"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+                this.paymentPendingList = data
+            } catch (e) {
+                this.$toasted.show(e,{
+                                type: "Error",
+                                theme: "bubble", 
+                                position: "top-right", 
+                                duration : 2000
+                            })
+            }   
       }
   }
 }
