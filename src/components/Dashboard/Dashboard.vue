@@ -1,7 +1,6 @@
 <template>
   <div>
     <!-- Fixed navbar -->
-    <!-- Fixed navbar -->
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -77,7 +76,7 @@ export default {
   mounted() { 
       this.userID = localStorage.getItem('userID')
       this.userName = localStorage.getItem('userName')
-      let socket = new Socket("ws://localhost:4000/socket")
+      let socket = new Socket("ws://agile-project-tartu-university.appspot.com/socket")
       socket.connect();
       this.channel = socket.channel(`user:${this.userID}`)
       this.channel.join()
