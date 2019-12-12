@@ -153,10 +153,10 @@ export default {
                         this.$toasted.show('Payment Preference is: Monthly Payment (You will can pay After )',{
                         theme: "outline",
                         position: "top-right", 
-                        duration : 2000 })
+                        duration : 5000 })
                     }
                 }
-                this.$toasted.show('Success: Booking End',{
+                this.$toasted.show('Success: Booking Ended',{
                     theme: "outline",
                     position: "top-right", 
                     duration : 2000 })
