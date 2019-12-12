@@ -8,9 +8,9 @@
                 <label for="inputFullname" >Full Name</label>
                 <input v-model="userData.full_name" type="text" id="inputFullname" class="form-control" placeholder="Full Name" required autofocus>
                 <label for="inputEmail" >Email</label>
-                <input v-model="userData.email" type="text" id="inputEmail" class="form-control" placeholder="Email" required >
+                <input v-model="userData.email" type="email" id="inputEmail" class="form-control" placeholder="Email" required readonly>
                 <label for="inputAge" >Age</label>
-                <input v-model="userData.age" type="text" id="inputAge" class="form-control" placeholder="Age" required>
+                <input v-model="userData.age" type="number" min="0" id="inputAge" class="form-control" placeholder="Age" required>
                 <label for="inputAddress" >Address</label>
                 <input v-model="userData.address" type="text" id="inputAddress" class="form-control" placeholder="Address" required>
             </fieldset>

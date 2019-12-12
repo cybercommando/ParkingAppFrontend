@@ -9,12 +9,13 @@
       <label for="inputPassword" class="sr-only">Password</label>
       <input v-model="user.password" type="text" id="inputPassword" class="form-control" placeholder="Password" required>
       <label for="inputEmail" class="sr-only">Email</label>
-      <input v-model="user.email" type="text" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
+      <input v-model="user.email" type="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
       <label for="inputAge" class="sr-only">Age</label>
-      <input v-model="user.age" type="text" id="inputAge" class="form-control" placeholder="Age" required autofocus>
+      <input v-model="user.age" type="number" min="0" id="inputAge" class="form-control" placeholder="Age" required autofocus>
       <label for="inputAddress" class="sr-only">Address</label>
       <input v-model="user.address" type="text" id="inputAddress" class="form-control" placeholder="Address" required autofocus>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+      <button class="btn btn-lg btn-primary btn-block" id="registerButton" type="submit">Register</button>
+      <h4 class="err-message">{{err_message}}</h4>
     </form>
   </div>
 </template>
@@ -33,7 +34,8 @@ export default {
             age: '',
             address: '',
             email: '',
-            paymentpreference: 'EOP'
+            paymentpreference: 'EOP',
+            err_message: ''
         }
     }
   },
@@ -44,9 +46,11 @@ export default {
         .then(() => this.$router.push("/Dashboard"))
         .catch(err => {
           console.log(err)
+          this.err_message = 'Username and Email Must be Unique'
           })
       } catch(e) {
         console.log(e)
+        this.err_message = 'Username and Email Must be Unique'
       }
     }
   }
@@ -54,6 +58,10 @@ export default {
 </script>
 
 <style lang="css">
+.err-message {
+  text-align: center;
+  color: red;
+}
 
 .login-wrapper {
   background: #D1D1D1;
