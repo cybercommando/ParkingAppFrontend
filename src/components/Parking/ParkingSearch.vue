@@ -12,16 +12,16 @@
             </div>
             <div class="col-sm-3">
               <label for="inputStartTime">Start Time</label>
-              <date-picker v-model="StartTime"></date-picker>
+              <date-picker id="st" name="start_time" v-model="StartTime"></date-picker>
               <!--enddate <input v-model="StartTime" type="text" id="inputStartTime" class="form-control date" placeholder="StartTime" required> -->
             </div>
             <div class="col-sm-3">
               <label for="inputEndTime">EndTime</label>
-              <date-picker v-model="EndTime"></date-picker>
+              <date-picker id="et" name="end_time" v-model="EndTime"></date-picker>
               <!-- <input v-model="EndTime" type="text" id="inputEndTime" class="form-control date" placeholder="EndTime" required> -->
             </div>
             <div class="col-sm-3">
-              <button class="btn btn-sm btn-primary" type="submit">Search</button>
+              <button class="btn btn-sm btn-primary" id="searchButton" type="submit">Search</button>
             </div>
           </div>
         </form>
