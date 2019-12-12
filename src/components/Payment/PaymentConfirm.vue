@@ -1,55 +1,59 @@
 <template>
     <div class="row">
-        <h2 style="text-align: center">Confirm Booking</h2>
-        <fieldset>
-            <legend>Parking Details</legend>
-            <div class="col-md-6">
-                <h4 style="font-weight: bold">Parking Slot Details</h4>
-                <h5><span style="font-weight: bold">Parking Slot:</span> {{bookingData.ParkingSlotDetails.name}}</h5>
-                <h5><span style="font-weight: bold">Parking Zone:</span> {{bookingData.ParkingSlotDetails.catname}}</h5>
-                <h5><span style="font-weight: bold">Free Minutes:</span> {{bookingData.ParkingSlotDetails.freeminutes}}</h5>
-                <h5><span style="font-weight: bold">Hourly Rate:</span> {{bookingData.ParkingSlotDetails.ratehour}}</h5>
-                <h5><span style="font-weight: bold">Real Time Rate:</span> {{bookingData.ParkingSlotDetails.raterealtime}}</h5>
-                <h5><span style="font-weight: bold">Start Time:</span> {{bookingData.start_time | formatDate}}</h5>
-                <h5><span style="font-weight: bold">End Time:</span> {{bookingData.end_time | formatDate}}</h5>
-            </div>
-            <div class="col-md-6">
-                <h4 style="font-weight: bold">Payment Summary</h4>
-                <h5><span style="font-weight: bold">Estimated Hourly Rate:</span> {{bookingData.hourlyprice}}</h5>
-                <h5><span style="font-weight: bold">Estimated Real Time Rate:</span> {{bookingData.realtimeprice}}</h5>
-                <h5><span style="font-weight: bold">Payment Type:</span> {{bookingData.calc_criteria | PaymentType}}</h5>
-                <h5><span style="font-weight: bold">Payment Mode - (for Real Time):</span> {{userData.paymentpreference}}</h5>
-                <h2><span style="font-weight: bold">Amount:</span> {{amount}}</h2>
-            </div>
-        </fieldset>
-        <fieldset>
-        <legend>Payment Details</legend>
-        <form class="form-signin" @submit.prevent="parkingConfirmation">
-            <div class="col-md-5">
-                <div class="col-sm-12">
-                    <label for="CardName">Name on Card</label>
-                    <input v-model="CardName" type="text" id="CardName" class="form-control" placeholder="Name on Card" required autofocus>
+        <div class="col-lg-12">
+            <h2 style="text-align: center">Confirm Booking</h2>
+            <fieldset>
+                <legend>Parking Details</legend>
+                <div class="col-md-6">
+                    <h4 style="font-weight: bold">Parking Slot Details</h4>
+                    <h5><span style="font-weight: bold">Parking Slot:</span> {{bookingData.ParkingSlotDetails.name}}</h5>
+                    <h5><span style="font-weight: bold">Parking Zone:</span> {{bookingData.ParkingSlotDetails.catname}}</h5>
+                    <h5><span style="font-weight: bold">Free Minutes:</span> {{bookingData.ParkingSlotDetails.freeminutes}}</h5>
+                    <h5><span style="font-weight: bold">Hourly Rate:</span> {{bookingData.ParkingSlotDetails.ratehour}}</h5>
+                    <h5><span style="font-weight: bold">Real Time Rate:</span> {{bookingData.ParkingSlotDetails.raterealtime}}</h5>
+                    <h5><span style="font-weight: bold">Start Time:</span> {{bookingData.start_time | formatDate}}</h5>
+                    <h5><span style="font-weight: bold">End Time:</span> {{bookingData.end_time | formatDate}}</h5>
                 </div>
-                <div class="col-sm-12">
-                    <label for="CardNumber">Card Number</label>
-                    <input v-model="CardNumber" type="text" id="CardNumber" class="form-control date" placeholder="Card Number" required>
+                <div class="col-md-6">
+                    <h4 style="font-weight: bold">Payment Summary</h4>
+                    <h5><span style="font-weight: bold">Estimated Hourly Rate:</span> {{bookingData.hourlyprice}}</h5>
+                    <h5><span style="font-weight: bold">Estimated Real Time Rate:</span> {{bookingData.realtimeprice}}</h5>
+                    <h5><span style="font-weight: bold">Payment Type:</span> {{bookingData.calc_criteria | PaymentType}}</h5>
+                    <h5><span style="font-weight: bold">Payment Mode - (for Real Time):</span> {{userData.paymentpreference}}</h5>
+                    <h2><span style="font-weight: bold">Amount:</span> {{amount}}</h2>
                 </div>
-            </div>
-            <div class="col-md-5">
-                <div class="col-sm-12">
-                    <label for="CVV">CVV</label>
-                    <input v-model="CVV" type="text" id="CVV" class="form-control" placeholder="CVV" required autofocus>
+            </fieldset>
+        </div>
+        <div class="col-lg-12">
+            <fieldset>
+            <legend>Payment Details</legend>
+            <form class="form-signin" @submit.prevent="parkingConfirmation">
+                <div class="col-md-5">
+                    <div class="col-sm-12">
+                        <label for="CardName">Name on Card</label>
+                        <input v-model="CardName" type="text" id="CardName" class="form-control" placeholder="Name on Card" required autofocus>
+                    </div>
+                    <div class="col-sm-12">
+                        <label for="CardNumber">Card Number</label>
+                        <input v-model="CardNumber" type="text" id="CardNumber" class="form-control date" placeholder="Card Number" required>
+                    </div>
                 </div>
-                <div class="col-sm-12">
-                    <label for="ExpiryDate">Expiry Date</label>
-                    <input v-model="ExpiryDate" type="date" id="ExpiryDate" class="form-control date" placeholder="ExpiryDate" required>
+                <div class="col-md-5">
+                    <div class="col-sm-12">
+                        <label for="CVV">CVV</label>
+                        <input v-model="CVV" type="text" id="CVV" class="form-control" placeholder="CVV" required autofocus>
+                    </div>
+                    <div class="col-sm-12">
+                        <label for="ExpiryDate">Expiry Date</label>
+                        <input v-model="ExpiryDate" type="date" id="ExpiryDate" class="form-control date" placeholder="ExpiryDate" required>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-2">
-                <button class="btn btn-lg btn-success" type="submit" style="float: right">Confirm</button>
-            </div>
-        </form>
-        </fieldset>
+                <div class="col-md-2">
+                    <button class="btn btn-lg btn-success" type="submit" style="float: right">Confirm</button>
+                </div>
+            </form>
+            </fieldset>
+        </div>
   </div>
 </template>
 
