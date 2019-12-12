@@ -76,7 +76,7 @@ export default {
   mounted() { 
       this.userID = localStorage.getItem('userID')
       this.userName = localStorage.getItem('userName')
-      let socket = new Socket("wss://agile-project-tartu-university.appspot.com/socket")
+      let socket = new Socket("wss://parkingapp.gigalixirapp.com/socket")
       socket.connect();
       this.channel = socket.channel(`user:${this.userID}`)
       this.channel.join()
