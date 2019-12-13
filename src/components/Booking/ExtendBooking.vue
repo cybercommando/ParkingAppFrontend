@@ -11,7 +11,8 @@
               <input v-model="bookingDetails.end_time" type="text" id="inputend_time" class="form-control" placeholder="Password" required readonly>
               <label for="inputnew_end_time" >New End Time</label>
               <!-- <input v-model="new_end_time" type="text" id="inputnew_end_time" class="form-control" placeholder="Password" required autofocus> -->
-              <date-picker v-model="newEndTime"></date-picker>
+              <!-- <date-picker v-model="newEndTime"></date-picker> -->
+              <datetime type="datetime" v-model="newEndTime" :min-datetime="bookingDetails.end_time"></datetime>
               <hr />
               <button class="btn btn-sm btn-default" type="button" @click="goBack()">Back</button>
               <button class="btn btn-sm btn-success" type="submit">Extend</button>
@@ -45,6 +46,11 @@
 <script>
 import moment from 'moment';
 import datePicker from 'vue-bootstrap-datetimepicker';
+
+import { Datetime } from 'vue-datetime'
+// You need a specific loader for CSS files
+import 'vue-datetime/dist/vue-datetime.css'
+
 // You have to add CSS yourself
 import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css';
 // Bootstrap css  
@@ -81,7 +87,8 @@ export default {
       this.FinalPaymentButton = true;
   },
   components:{
-    datePicker
+    datePicker,
+    datetime: Datetime
   },
   methods: {
     async extendBooking() {

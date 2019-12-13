@@ -6,23 +6,26 @@
         <legend>Search Parkings</legend>
         <form @submit.prevent="parkingSearch">
           <div class="col-md-12">
-            <div class="col-sm-3">
+            <div class="col-sm-4">
               <label for="inputLocation">Location</label>
-              <input v-model="Location" type="text" id="inputLocation" class="form-control" placeholder="Location" required autofocus>
+              <input v-model="Location" type="text" id="inputLocation" placeholder="Location" required autofocus>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-4">
               <label for="inputStartTime">Start Time</label>
-              <date-picker id="st" name="start_time" v-model="StartTime"></date-picker>
+              <!-- <date-picker id="st" name="start_time" v-model="StartTime"></date-picker> -->
+              <datetime type="datetime" id="st" v-model="StartTime"></datetime>
               <!--enddate <input v-model="StartTime" type="text" id="inputStartTime" class="form-control date" placeholder="StartTime" required> -->
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-4">
               <label for="inputEndTime">EndTime</label>
-              <date-picker id="et" name="end_time" v-model="EndTime"></date-picker>
+              <!-- <date-picker id="et" name="end_time" v-model="EndTime"></date-picker> -->
+              <datetime type="datetime" id="et" v-model="EndTime" :min-datetime="StartTime"></datetime>
               <!-- <input v-model="EndTime" type="text" id="inputEndTime" class="form-control date" placeholder="EndTime" required> -->
             </div>
-            <div class="col-sm-3">
-              <button class="btn btn-sm btn-primary" id="searchButton" type="submit">Search</button>
-            </div>
+          </div>
+          <div class="col-sm-12">
+              <hr />
+              <button class="btn btn-sm btn-primary btn-block" id="searchButton" style="float: right" type="submit">Search</button>
           </div>
         </form>
       </fieldset>
@@ -38,6 +41,7 @@
           v-for = "(m,index) in markers"
           v-bind:position = "m.position"
           v-bind:clickable = "true"
+          v-bind:animation = "2"
           @click="toggleInfoWindow(m,index)">
           </gmap-marker>
         </gmap-map>
@@ -92,7 +96,7 @@
             </div>
             <div class="col-sm-12">
               <br />
-              <button class="btn btn-sm btn-success btn-block" type="submit">Payment</button>
+              <button class="btn btn-sm btn-success btn-block" :disabled="FinalPaymentButton" type="submit">Payment</button>
             </div>
             
           </div>
@@ -134,12 +138,25 @@
 <script>
 import moment from 'moment';
 import datePicker from 'vue-bootstrap-datetimepicker';
+
+import { Datetime } from 'vue-datetime'
+// You need a specific loader for CSS files
+import 'vue-datetime/dist/vue-datetime.css'
+
 // You have to add CSS yourself
 import 'eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css';
 // Bootstrap css  
 import 'bootstrap/dist/css/bootstrap.css';
 
 import axios from 'axios'
+import strip_bom from 'strip-bom';
+
+function formatDateFun(value){
+  if (value) {
+    return moment(String(value)).format('MM/DD/YYYY hh:mm:ss a')
+  }
+}
+
 
 export default {
   name: 'ParkingSearch',
@@ -185,7 +202,8 @@ export default {
     }
   },
   components:{
-    datePicker
+    datePicker,
+    datetime: Datetime
   },
   methods: {
     toggleInfoWindow: function(marker, idx) {
@@ -228,6 +246,7 @@ export default {
         this.HourlyPrice = this.parkingObj.ratehour * diff_hours(timeStart,timeEnd)
         this.RealTimePrice = this.parkingObj.raterealtime * Math.abs(Math.ceil((diff_mins(timeStart,timeEnd)/5)))
       }
+      this.FinalPaymentButton = false;
     },
     async parkingSearch() {
       try{
@@ -262,7 +281,7 @@ export default {
         this.BookingData.realtimeprice= this.RealTimePrice
 
         if(this.FinalPaymentType == '1' ){
-            if(this.BookingData.end_time == String.empty){
+            if(this.BookingData.start_time == '' || this.BookingData.end_time == ''){
                 this.$toasted.show('Error: Please Enter a Valid End Time for Hourly Payment',{
                         type: "Error",
                         theme: "bubble", 
@@ -274,7 +293,17 @@ export default {
                 this.$router.push({ name: 'PaymentConfirm', params: { bd: this.BookingData }})
             }
         }else{
-            this.$router.push({ name: 'PaymentConfirm', params: { bd: this.BookingData }})
+            if(this.BookingData.start_time == ''){
+                this.$toasted.show('Error: Please Enter a Valid Start Time for Realtime Payment',{
+                        type: "Error",
+                        theme: "bubble", 
+                        position: "top-right", 
+                        duration : 2000
+                    })
+            }
+            else{
+                this.$router.push({ name: 'PaymentConfirm', params: { bd: this.BookingData }})
+            }
         }
 
         
@@ -291,6 +320,7 @@ export default {
     }
   },
   async created () {
+    this.FinalPaymentButton = true;
     this.markers = []
     try {
       // $('.date').datetimepicker();
